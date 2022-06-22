@@ -1,59 +1,26 @@
-use flume::unbounded;
-use std::{
-    sync::{Arc, Barrier},
-    thread::JoinHandle,
-};
+use crate::std_thread::OneToOne;
+use flume;
 
-pub struct OneToOne {
-    handler: Vec<JoinHandle<u32>>,
-    barrier: Arc<Barrier>,
+pub fn new_unbounded(n: usize) -> OneToOne {
+    fn mkch() -> (Box<dyn Fn(usize) + Send>, Box<dyn Fn() -> usize + Send>) {
+        let (tx, rx) = flume::unbounded();
+        (
+            Box::new(move |x| tx.send(x).unwrap()),
+            Box::new(move || rx.recv().unwrap()),
+        )
+    }
+
+    OneToOne::new(n, mkch)
 }
 
-impl OneToOne {
-    pub fn new(n: usize) -> Self {
-        let mut v = Vec::new();
-
-        let barrier = Arc::new(Barrier::new(n * 2 + 1));
-
-        for _ in 0..n {
-            let (tx, rx) = unbounded();
-
-            // Create a sender.
-            let bar = barrier.clone();
-            let th = std::thread::spawn(move || {
-                bar.wait();
-                for _ in 0..crate::MAX_COUNT {
-                    tx.send(1).unwrap();
-                }
-                0
-            });
-            v.push(th);
-
-            // Create a receiver.
-            let bar = barrier.clone();
-            let th = std::thread::spawn(move || {
-                bar.wait();
-                let mut cnt = 0;
-                for _ in 0..crate::MAX_COUNT {
-                    let n = rx.recv().unwrap();
-                    cnt += n;
-                }
-                cnt
-            });
-            v.push(th);
-        }
-
-        Self {
-            handler: v,
-            barrier,
-        }
+pub fn new_bounded(n: usize) -> OneToOne {
+    fn mkch() -> (Box<dyn Fn(usize) + Send>, Box<dyn Fn() -> usize + Send>) {
+        let (tx, rx) = flume::bounded(1024);
+        (
+            Box::new(move |x| tx.send(x).unwrap()),
+            Box::new(move || rx.recv().unwrap()),
+        )
     }
 
-    pub fn start(&mut self) {
-        self.barrier.wait();
-        let v = std::mem::take(&mut self.handler);
-        for th in v {
-            th.join().unwrap();
-        }
-    }
+    OneToOne::new(n, mkch)
 }
