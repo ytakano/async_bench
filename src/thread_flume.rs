@@ -1,7 +1,7 @@
-use crate::std_thread::OneToOne;
+use crate::std_thread::{ManyToOne, OneToOne};
 use flume;
 
-pub fn new_unbounded(n: usize) -> OneToOne {
+pub fn new_one_to_one_unbounded(n: usize) -> OneToOne {
     fn mkch() -> (Box<dyn Fn(usize) + Send>, Box<dyn Fn() -> usize + Send>) {
         let (tx, rx) = flume::unbounded();
         (
@@ -13,7 +13,7 @@ pub fn new_unbounded(n: usize) -> OneToOne {
     OneToOne::new(n, mkch)
 }
 
-pub fn new_bounded(n: usize) -> OneToOne {
+pub fn new_one_to_one_bounded(n: usize) -> OneToOne {
     fn mkch() -> (Box<dyn Fn(usize) + Send>, Box<dyn Fn() -> usize + Send>) {
         let (tx, rx) = flume::bounded(1024);
         (
@@ -23,4 +23,18 @@ pub fn new_bounded(n: usize) -> OneToOne {
     }
 
     OneToOne::new(n, mkch)
+}
+
+pub fn new_many_to_one_bounded(n: usize) -> ManyToOne {
+    let (tx, rx) = flume::bounded(1024);
+    let mut v = Vec::<Box<dyn Fn(usize) + Send>>::new();
+
+    for _ in 0..n {
+        let ch = tx.clone();
+        v.push(Box::new(move |msg| {
+            ch.send(msg).unwrap();
+        }));
+    }
+
+    ManyToOne::new(v, Box::new(move || rx.recv().unwrap()))
 }

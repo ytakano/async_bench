@@ -9,35 +9,27 @@ fn bench_one_to_one(c: &mut Criterion) {
     let runtime = Arc::new(TokioRuntime::new().unwrap());
 
     for i in [1, 2, 4, 6, 8].iter() {
-        g.bench_with_input(
-            BenchmarkId::new("asyn_std::channel::unbounded", i),
-            i,
-            |b, i| {
-                b.iter(move || {
-                    async_std::task::block_on(async {
-                        let mut hdl = async_std_bench::new_one_to_one_unbounded(*i as usize).await;
-                        hdl.start().await;
-                    });
-                })
-            },
-        );
+        g.bench_with_input(BenchmarkId::new("async_std::unbounded", i), i, |b, i| {
+            b.iter(move || {
+                async_std::task::block_on(async {
+                    let mut hdl = async_std_bench::new_one_to_one_unbounded(*i as usize).await;
+                    hdl.start().await;
+                });
+            })
+        });
 
-        g.bench_with_input(
-            BenchmarkId::new("asyn_std::channel::bounded", i),
-            i,
-            |b, i| {
-                b.iter(move || {
-                    async_std::task::block_on(async {
-                        let mut hdl = async_std_bench::new_one_to_one_bounded(*i as usize).await;
-                        hdl.start().await;
-                    });
-                })
-            },
-        );
+        g.bench_with_input(BenchmarkId::new("async_std::bounded", i), i, |b, i| {
+            b.iter(move || {
+                async_std::task::block_on(async {
+                    let mut hdl = async_std_bench::new_one_to_one_bounded(*i as usize).await;
+                    hdl.start().await;
+                });
+            })
+        });
 
         let rt = runtime.clone();
         g.bench_with_input(
-            BenchmarkId::new("tokio::sync::mpsc::unbounded_channel", i),
+            BenchmarkId::new("tokio::unbounded_channel", i),
             i,
             move |b, i| {
                 b.iter(|| {
@@ -50,61 +42,53 @@ fn bench_one_to_one(c: &mut Criterion) {
         );
 
         let rt = runtime.clone();
-        g.bench_with_input(
-            BenchmarkId::new("tokio::sync::mpsc::channel", i),
-            i,
-            move |b, i| {
-                b.iter(|| {
-                    rt.block_on(async {
-                        let mut hdl = tokio_bench::new_one_to_one_bounded(*i as usize).await;
-                        hdl.start().await;
-                    });
-                })
-            },
-        );
+        g.bench_with_input(BenchmarkId::new("tokio::channel", i), i, move |b, i| {
+            b.iter(|| {
+                rt.block_on(async {
+                    let mut hdl = tokio_bench::new_one_to_one_bounded(*i as usize).await;
+                    hdl.start().await;
+                });
+            })
+        });
 
-        g.bench_with_input(BenchmarkId::new("std::mpsc::channel", i), i, |b, i| {
+        g.bench_with_input(BenchmarkId::new("std::channel", i), i, |b, i| {
             b.iter(move || {
-                let mut hdl = std_thread::new_channel(*i as usize);
+                let mut hdl = std_thread::new_one_to_one_channel(*i as usize);
                 hdl.start();
             })
         });
 
-        g.bench_with_input(
-            BenchmarkId::new("std::mpsc::new_sync_channel", i),
-            i,
-            |b, i| {
-                b.iter(move || {
-                    let mut hdl = std_thread::new_sync_channel(*i as usize);
-                    hdl.start();
-                })
-            },
-        );
+        g.bench_with_input(BenchmarkId::new("std::sync_channel", i), i, |b, i| {
+            b.iter(move || {
+                let mut hdl = std_thread::new_one_to_one_sync_channel(*i as usize);
+                hdl.start();
+            })
+        });
 
         g.bench_with_input(BenchmarkId::new("crossbeam::unbounded", i), i, |b, i| {
             b.iter(move || {
-                let mut hdl = thread_crossbeam::new_unbounded(*i as usize);
+                let mut hdl = thread_crossbeam::new_one_to_one_unbounded(*i as usize);
                 hdl.start();
             })
         });
 
         g.bench_with_input(BenchmarkId::new("crossbeam::bounded", i), i, |b, i| {
             b.iter(move || {
-                let mut hdl = thread_crossbeam::new_bounded(*i as usize);
+                let mut hdl = thread_crossbeam::new_one_to_one_bounded(*i as usize);
                 hdl.start();
             })
         });
 
         g.bench_with_input(BenchmarkId::new("flume::unbounded", i), i, |b, i| {
             b.iter(move || {
-                let mut hdl = thread_flume::new_unbounded(*i as usize);
+                let mut hdl = thread_flume::new_one_to_one_unbounded(*i as usize);
                 hdl.start();
             })
         });
 
         g.bench_with_input(BenchmarkId::new("flume::bounded", i), i, |b, i| {
             b.iter(move || {
-                let mut hdl = thread_flume::new_bounded(*i as usize);
+                let mut hdl = thread_flume::new_one_to_one_bounded(*i as usize);
                 hdl.start();
             })
         });
@@ -112,5 +96,52 @@ fn bench_one_to_one(c: &mut Criterion) {
     g.finish();
 }
 
-criterion_group!(benches, bench_one_to_one);
+fn bench_many_to_one(c: &mut Criterion) {
+    let mut g = c.benchmark_group(format!("many_to_one"));
+    g.measurement_time(Duration::from_secs(300));
+    let runtime = TokioRuntime::new().unwrap();
+
+    g.bench_function("async_std::unbounded", move |b| {
+        b.iter(move || {
+            async_std::task::block_on(async {
+                let mut hdl = async_std_bench::new_many_to_one_bounded(8).await;
+                hdl.start().await;
+            });
+        })
+    });
+
+    g.bench_function("tokio::channel", move |b| {
+        b.iter(|| {
+            runtime.block_on(async {
+                let mut hdl = tokio_bench::new_many_to_one_bounded(8).await;
+                hdl.start().await;
+            });
+        })
+    });
+
+    g.bench_function("std::sync_channel", move |b| {
+        b.iter(move || {
+            let mut hdl = std_thread::new_many_to_one_sync_channel(8);
+            hdl.start();
+        })
+    });
+
+    g.bench_function("crossbeam::bounded", move |b| {
+        b.iter(move || {
+            let mut hdl = thread_crossbeam::new_many_to_one_bounded(8);
+            hdl.start();
+        })
+    });
+
+    g.bench_function("flume::bounded", move |b| {
+        b.iter(move || {
+            let mut hdl = thread_flume::new_one_to_one_bounded(8);
+            hdl.start();
+        })
+    });
+
+    g.finish();
+}
+
+criterion_group!(benches, bench_many_to_one, bench_one_to_one);
 criterion_main!(benches);
