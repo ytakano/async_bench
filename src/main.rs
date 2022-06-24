@@ -7,7 +7,7 @@ mod thread_crossbeam;
 mod thread_flume;
 mod tokio_bench;
 
-const MAX_COUNT: usize = 10000000;
+const MAX_COUNT: usize = 1000000;
 const RECV_NUM: usize = 8;
 
 fn main() {
@@ -116,6 +116,68 @@ fn main() {
             ((MAX_COUNT / 10 * RECV_NUM) as f64 / sec) as usize
         );
     });
+
+    println!();
+    println!("many-to-one");
+    println!("std::sync::Mutex");
+    for i in [4, 8, 12, 16, 20, 24] {
+        let mut hdl = std_thread::MutexBench::new(i);
+        let start = SystemTime::now();
+        hdl.start();
+        let dur = start.elapsed().unwrap();
+        let sec = dur.as_secs_f64();
+        println!(
+            "n = {:>2}: {:>10} [ops/s]",
+            i,
+            ((MAX_COUNT * i) as f64 / sec) as usize
+        );
+    }
+
+    println!("parking_lot::Mutex");
+    for i in [4, 8, 12, 16, 20, 24] {
+        let mut hdl = std_thread::MutexBenchPackingLot::new(i);
+        let start = SystemTime::now();
+        hdl.start();
+        let dur = start.elapsed().unwrap();
+        let sec = dur.as_secs_f64();
+        println!(
+            "n = {:>2}: {:>10} [ops/s]",
+            i,
+            ((MAX_COUNT * i) as f64 / sec) as usize
+        );
+    }
+
+    println!("async_std::sync::Mutex");
+    for i in [4, 8, 12, 16, 20, 24] {
+        async_std::task::block_on(async {
+            let mut hdl = async_std_bench::MutexBench::new(i);
+            let start = SystemTime::now();
+            hdl.start().await;
+            let dur = start.elapsed().unwrap();
+            let sec = dur.as_secs_f64();
+            println!(
+                "n = {:>2}: {:>10} [ops/s]",
+                i,
+                ((MAX_COUNT * i) as f64 / sec) as usize
+            );
+        });
+    }
+
+    println!("tokio::sync::Mutex");
+    for i in [4, 8, 12, 16, 20, 24] {
+        runtime.block_on(async {
+            let mut hdl = tokio_bench::MutexBench::new(i);
+            let start = SystemTime::now();
+            hdl.start().await;
+            let dur = start.elapsed().unwrap();
+            let sec = dur.as_secs_f64();
+            println!(
+                "n = {:>2}: {:>10} [ops/s]",
+                i,
+                ((MAX_COUNT * i) as f64 / sec) as usize
+            );
+        });
+    }
 }
 
 fn run_one_to_one(f: fn(usize) -> std_thread::OneToOne) {

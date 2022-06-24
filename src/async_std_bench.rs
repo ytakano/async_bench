@@ -1,6 +1,7 @@
 use async_barrier::Barrier;
 use async_std::{
     channel::{self, Receiver, Sender},
+    sync::Mutex,
     task::JoinHandle,
 };
 use std::sync::Arc;
@@ -130,4 +131,43 @@ pub async fn new_many_to_one_bounded(n: usize) -> ManyToOneAsync {
         channel::bounded(1024)
     }
     ManyToOneAsync::new(n, mkch)
+}
+
+pub struct MutexBench {
+    handler: Vec<JoinHandle<()>>,
+    barrier: Arc<Barrier>,
+}
+
+impl MutexBench {
+    pub fn new(n: usize) -> Self {
+        let mut v = Vec::new();
+        let barrier = Arc::new(Barrier::new(n + 1));
+        let shared = Arc::new(Mutex::new(0));
+
+        for _ in 0..n {
+            let bar = barrier.clone();
+            let n = shared.clone();
+            let th = async_std::task::spawn(async move {
+                bar.wait().await;
+                for _ in 0..crate::MAX_COUNT {
+                    let mut guard = n.lock().await;
+                    *guard += 1;
+                }
+            });
+            v.push(th);
+        }
+
+        Self {
+            handler: v,
+            barrier,
+        }
+    }
+
+    pub async fn start(&mut self) {
+        self.barrier.wait().await;
+        let v = std::mem::take(&mut self.handler);
+        for th in v {
+            th.await;
+        }
+    }
 }

@@ -1,5 +1,5 @@
 use std::{
-    sync::{mpsc, Arc, Barrier},
+    sync::{mpsc, Arc, Barrier, Mutex},
     thread::JoinHandle,
 };
 
@@ -150,4 +150,82 @@ pub fn new_many_to_one_sync_channel(n: usize) -> ManyToOne {
     }
 
     ManyToOne::new(v, Box::new(move || rx.recv().unwrap()))
+}
+
+pub struct MutexBench {
+    handler: Vec<JoinHandle<()>>,
+    barrier: Arc<Barrier>,
+}
+
+impl MutexBench {
+    pub fn new(n: usize) -> Self {
+        let mut v = Vec::new();
+        let barrier = Arc::new(Barrier::new(n + 1));
+        let shared = Arc::new(Mutex::new(0));
+
+        for _ in 0..n {
+            let bar = barrier.clone();
+            let n = shared.clone();
+            let th = std::thread::spawn(move || {
+                bar.wait();
+                for _ in 0..crate::MAX_COUNT {
+                    let mut guard = n.lock().unwrap();
+                    *guard += 1;
+                }
+            });
+            v.push(th);
+        }
+
+        Self {
+            handler: v,
+            barrier,
+        }
+    }
+
+    pub fn start(&mut self) {
+        self.barrier.wait();
+        let v = std::mem::take(&mut self.handler);
+        for th in v {
+            th.join().unwrap();
+        }
+    }
+}
+
+pub struct MutexBenchPackingLot {
+    handler: Vec<JoinHandle<()>>,
+    barrier: Arc<Barrier>,
+}
+
+impl MutexBenchPackingLot {
+    pub fn new(n: usize) -> Self {
+        let mut v = Vec::new();
+        let barrier = Arc::new(Barrier::new(n + 1));
+        let shared = Arc::new(parking_lot::Mutex::new(0));
+
+        for _ in 0..n {
+            let bar = barrier.clone();
+            let n = shared.clone();
+            let th = std::thread::spawn(move || {
+                bar.wait();
+                for _ in 0..crate::MAX_COUNT {
+                    let mut guard = n.lock();
+                    *guard += 1;
+                }
+            });
+            v.push(th);
+        }
+
+        Self {
+            handler: v,
+            barrier,
+        }
+    }
+
+    pub fn start(&mut self) {
+        self.barrier.wait();
+        let v = std::mem::take(&mut self.handler);
+        for th in v {
+            th.join().unwrap();
+        }
+    }
 }
