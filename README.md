@@ -1,7 +1,7 @@
 # Performance Evaluation of Channel and Mutex of Rust
 
 - Author: **Yuuki Takano**
-- Data: 25th June 2022
+- Date: 25th June 2022
 
 This article introduces a performance evaluation of channel and Mutex of Rust. I evaluated channel implementation of `std`, [Crossbeam channel](https://docs.rs/crossbeam-channel/latest/crossbeam_channel/), [flume](https://docs.rs/flume/latest/flume/index.html), [async-std](https://async.rs/), and [Tokio](https://tokio.rs/), and Mutex implementation of `std`, [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/index.html), [async-std](https://async.rs/), and [Tokio](https://tokio.rs/).
 
@@ -51,6 +51,8 @@ In addition to that, [async-std](https://async.rs/) is quite better than [Tokio]
 
 This section shows PDF of latency of channels.
 
+You can see PDF from [https://ytakano.github.io/async_bench/](https://ytakano.github.io/async_bench/).
+
 ##### Unbounded Channel
 
 ![pdf of unbounded channel](https://ytakano.github.io/async_bench/1%20to%201%20(unbounded)/violin.svg)
@@ -95,9 +97,14 @@ As shown in this, [Crossbeam channel](https://docs.rs/crossbeam-channel/latest/c
 
 This section shows PDF of latency of many-to-one communications.
 
+![PDF of many-to-one](https://ytakano.github.io/async_bench/many%20to%201%20(bounded)/violin.svg)
+
 This figure shows PDF of latency of 1,000 x N operations.
 N is the number of senders.
 Y-axis is channel, and X-axis is latency.
+
+As shown in this figure, jitter of [async-std](https://async.rs/) is better than [Tokio](https://tokio.rs/).
+Remind that [Tokio](https://tokio.rs/)'s jitter is lower than [async-std](https://async.rs/) when one-to-one communications.
 
 ---
 
@@ -169,6 +176,6 @@ $ cargo criterion
 
 - [Crossbeam channel](https://docs.rs/crossbeam-channel/latest/crossbeam_channel/) is the fastest. Use this for multi-threaded programming.
 - Throughput of [async-std](https://async.rs/) is better than [Tokio](https://tokio.rs/).
-- Jitter of [Tokio](https://tokio.rs/) is better than [async-std](https://async.rs/).
+- From a view point of jitter, [Tokio](https://tokio.rs/) is better than [async-std](https://async.rs/) under some conditions, but [async-std](https://async.rs/) is better than [Tokio](https://tokio.rs/) under other conditions.
 - [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/index.html) is worse than `std` when high contention. `std`'s Mutex is not so bad because it is stable.
 - Mutex of [async-std](https://async.rs/) is significantly bad when high contention. Be careful.
