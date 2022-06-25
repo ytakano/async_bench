@@ -1,6 +1,7 @@
 # Performance Evaluation of Channel and Mutex of Rust
 
-Author: **Yuuki Takano**
+- Author: **Yuuki Takano**
+- Data: 25th June 2022
 
 This article introduces a performance evaluation of channel and Mutex of Rust. I evaluated channel implementation of `std`, [Crossbeam channel](https://docs.rs/crossbeam-channel/latest/crossbeam_channel/), [flume](https://docs.rs/flume/latest/flume/index.html), [async-std](https://async.rs/), and [Tokio](https://tokio.rs/), and Mutex implementation of `std`, [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/index.html), [async-std](https://async.rs/), and [Tokio](https://tokio.rs/).
 
@@ -29,6 +30,13 @@ This article introduces a performance evaluation of channel and Mutex of Rust. I
 
 I evaluated one-to-one communications, which means 1 sender and 1 receiver.
 
+```mermaid
+graph LR;
+    Sender1-->Receiver1;
+    Sender2-->Receiver2;
+    SenderN-->ReceiverN;
+```
+
 ![one-to-one](./figs/1to1_2022.png)
 
 These figures describe how many messages can be sent in a second; higher is better.
@@ -39,31 +47,42 @@ shows about bounded channel.
 As shown in these figures, [Crossbeam channel](https://docs.rs/crossbeam-channel/latest/crossbeam_channel/) is the fastest.
 In addition to that, [async-std](https://async.rs/) is quite better than [Tokio](https://tokio.rs/) and `std`.
 
-### PDF
+#### PDF
 
 This section shows PDF of latency of channels.
 
-#### Unbounded Channel
+##### Unbounded Channel
 
 ![pdf of unbounded channel](https://ytakano.github.io/async_bench/1%20to%201%20(unbounded)/violin.svg)
 
-This figure shows PDF of latency of each unbounded channel.
+This figure shows PDF of latency of 10,000 x N operations.
+N is the number of pairs.
 Y-axis is channel, and X-axis is latency.
 As shown in this figure, [async-std](https://async.rs/)'s jitter is high when contention is low.
 [Crossbeam channel](https://docs.rs/crossbeam-channel/latest/crossbeam_channel/) achieves low jitter.
 
-### Bounded Channel
+##### Bounded Channel
 
 ![pdf of bounded channel](https://ytakano.github.io/async_bench/1%20to%201%20(bounded)/violin.svg)
 
-This figure shows PDF of latency of each bounded channel.
+This figure shows PDF of latency of 10,000 x N operations.
+N is the number of pairs.
 Y-axis is channel, and X-axis is latency.
 Similar to the unbounded channels,
 [async-std](https://async.rs/)'s jitter is high when contention is low.
+On the other hand, [Tokio](https://tokio.rs/)'s jitter is low.
+From a view point of jitter, [Tokio](https://tokio.rs/) is better than [async-std](https://async.rs/).
 
 ### Many-to-one
 
-I evaluated many-to-one communications, which means N senders and 1 receiver.
+I evaluated many-to-one communications using bounded channel, which means N senders and 1 receiver.
+
+```mermaid
+graph LR;
+    Sender1-->Receiver;
+    Sender2-->Receiver;
+    SenderN-->Receiver;
+```
 
 ![many-to-one](./figs/Nto1_2022.png)
 
@@ -72,15 +91,33 @@ Y-axis is operations per second, and X-axis is the number of senders.
 
 As shown in this, [Crossbeam channel](https://docs.rs/crossbeam-channel/latest/crossbeam_channel/) and [async-std](https://async.rs/) are better than others.
 
+#### PDF
+
+This section shows PDF of latency of many-to-one communications.
+
+This figure shows PDF of latency of 1,000 x N operations.
+N is the number of senders.
+Y-axis is channel, and X-axis is latency.
+
 ---
 
 ## Mutex
+
+I evaluated Mutex to prepare N threads,
+and each thread acquires and releases a lock to access a shared variable.
+
+```mermaid
+graph LR;
+    Thread1--lock-->SharedVariable;
+    Thread2--lock-->SharedVariable;
+    ThreadN--lock-->SharedVariable;
+```
 
 ### Summary
 
 - Mutexes of `std` and [Tokio](https://tokio.rs/) are not so fast but quite stable.
 - When contention is low, [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/index.html) is better than `std`, but when contention is high [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/index.html) is **worse** than `std`.
-- When contention is high, [async_std](https://docs.rs/parking_lot/latest/parking_lot/index.html)
+- When contention is high, [async_std](https://docs.rs/parking_lot/latest/parking_lot/index.html) will suffer from starvation. Be careful.
 
 ### Throughput
 
@@ -105,7 +142,33 @@ This section shows PDF of latency of Mutexes.
 ![pdf of mutex](https://ytakano.github.io/async_bench/mutex/violin.svg)
 
 This figure shows PDF of latency of each Mutex.
-Y-axis is Mutex, and X-axis is latency.
+Y-axis is Mutex, and X-axis is latency of 10,000 x N operations.
+N is the number of threads.
+It means each thread acquire and release a lock 10,000 times,
+and the latency is the elapsed time to complete the N threads.
 
 As shown in this figure, both [async_std](https://docs.rs/parking_lot/latest/parking_lot/index.html) and [Tokio](https://tokio.rs/)'s jitter are high.
-[parking_lot](https://docs.rs/parking_lot/latest/parking_lot/index.html) and `std` are good form a view point of jitter.
+[parking_lot](https://docs.rs/parking_lot/latest/parking_lot/index.html) and `std` are good from a view point of jitter.
+
+## Reproducibility
+
+You can reproduce as follows.
+
+```text
+$ cargo run --release
+```
+
+and
+
+```text
+$ cargo install criterion
+$ cargo criterion
+```
+
+## Conclusion
+
+- [Crossbeam channel](https://docs.rs/crossbeam-channel/latest/crossbeam_channel/) is the fastest. Use this for multi-threaded programming.
+- Throughput of [async-std](https://async.rs/) is better than [Tokio](https://tokio.rs/).
+- Jitter of [Tokio](https://tokio.rs/) is better than [async-std](https://async.rs/).
+- [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/index.html) is worse than `std` when high contention. `std`'s Mutex is not so bad because it is stable.
+- Mutex of [async-std](https://async.rs/) is significantly bad when high contention. Be careful.
