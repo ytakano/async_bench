@@ -102,7 +102,7 @@ fn bench_one_to_one_bounded(c: &mut Criterion) {
 }
 
 fn bench_many_to_one(c: &mut Criterion) {
-    let mut g = c.benchmark_group(format!("many to 1 (unbouded)"));
+    let mut g = c.benchmark_group(format!("many to 1 (bounded)"));
     g.measurement_time(Duration::from_secs(30));
     let runtime = Arc::new(TokioRuntime::new().unwrap());
 
