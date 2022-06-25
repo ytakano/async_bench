@@ -5,7 +5,7 @@ use tokio::runtime::Runtime as TokioRuntime;
 
 fn bench_one_to_one_unbounded(c: &mut Criterion) {
     let mut g = c.benchmark_group(format!("1 to 1 (unbounded)"));
-    g.measurement_time(Duration::from_secs(10));
+    g.measurement_time(Duration::from_secs(30));
     let runtime = Arc::new(TokioRuntime::new().unwrap());
 
     for i in [1, 4, 8, 12, 16, 20, 24].iter() {
@@ -54,7 +54,7 @@ fn bench_one_to_one_unbounded(c: &mut Criterion) {
 
 fn bench_one_to_one_bounded(c: &mut Criterion) {
     let mut g = c.benchmark_group(format!("1 to 1 (bounded)"));
-    g.measurement_time(Duration::from_secs(10));
+    g.measurement_time(Duration::from_secs(30));
     let runtime = Arc::new(TokioRuntime::new().unwrap());
 
     for i in [1, 4, 8, 12, 16, 20, 24].iter() {
@@ -103,7 +103,7 @@ fn bench_one_to_one_bounded(c: &mut Criterion) {
 
 fn bench_many_to_one(c: &mut Criterion) {
     let mut g = c.benchmark_group(format!("many to 1 (unbouded)"));
-    g.measurement_time(Duration::from_secs(10));
+    g.measurement_time(Duration::from_secs(30));
     let runtime = Arc::new(TokioRuntime::new().unwrap());
 
     for i in [4, 8, 12, 16, 20, 24].iter() {
@@ -153,7 +153,7 @@ fn bench_many_to_one(c: &mut Criterion) {
 
 fn bench_mutex(c: &mut Criterion) {
     let mut g = c.benchmark_group(format!("mutex"));
-    g.measurement_time(Duration::from_secs(50));
+    g.measurement_time(Duration::from_secs(80));
     let runtime = Arc::new(TokioRuntime::new().unwrap());
 
     for i in [4, 6, 8, 12, 16].iter() {

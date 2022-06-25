@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Index - Criterion.rs</title>
+    <style type="text/css">body {
+    font: 14px Helvetica Neue;
+    text-rendering: optimizelegibility;
+}
+
+.body {
+    width: 960px;
+    margin: auto;
+}
+
+a:link {
+    color: #1F78B4;
+    text-decoration: none;
+}
+
+h2 {
+    font-size: 36px;
+    font-weight: 300;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+#footer {
+    height: 40px;
+    background: #888;
+    color: white;
+    font-size: larger;
+    font-weight: 300;
+}
+
+#footer a {
+    color: white;
+    text-decoration: underline;
+}
+
+#footer p {
+    text-align: center
+}
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="body">
+        <h2>Criterion.rs Benchmark Index</h2>
+        See individual benchmark pages below for more details.
+        <ul>
+            <li><a href="mutex/index.html">mutex</a></li>
+            
+            <ul>
+                <li>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th><a href="mutex/std/index.html">std</a></th>
+                            <th><a href="mutex/parking_lot/index.html">parking_lot</a></th>
+                            <th><a href="mutex/async_std/index.html">async_std</a></th>
+                            <th><a href="mutex/tokio/index.html">tokio</a></th>
+                        </tr>
+                        <tr>
+                            <th><a href="mutex/4/index.html">4</a></th>
+                            <td><a href="mutex/std/4/index.html">mutex/std/4</a></td>
+                            <td><a href="mutex/parking_lot/4/index.html">mutex/parking_lot/4</a></td>
+                            <td><a href="mutex/async_std/4/index.html">mutex/async_std/4</a></td>
+                            <td><a href="mutex/tokio/4/index.html">mutex/tokio/4</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="mutex/6/index.html">6</a></th>
+                            <td><a href="mutex/std/6/index.html">mutex/std/6</a></td>
+                            <td><a href="mutex/parking_lot/6/index.html">mutex/parking_lot/6</a></td>
+                            <td><a href="mutex/async_std/6/index.html">mutex/async_std/6</a></td>
+                            <td><a href="mutex/tokio/6/index.html">mutex/tokio/6</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="mutex/8/index.html">8</a></th>
+                            <td><a href="mutex/std/8/index.html">mutex/std/8</a></td>
+                            <td><a href="mutex/parking_lot/8/index.html">mutex/parking_lot/8</a></td>
+                            <td><a href="mutex/async_std/8/index.html">mutex/async_std/8</a></td>
+                            <td><a href="mutex/tokio/8/index.html">mutex/tokio/8</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="mutex/12/index.html">12</a></th>
+                            <td><a href="mutex/std/12/index.html">mutex/std/12</a></td>
+                            <td><a href="mutex/parking_lot/12/index.html">mutex/parking_lot/12</a></td>
+                            <td><a href="mutex/async_std/12/index.html">mutex/async_std/12</a></td>
+                            <td><a href="mutex/tokio/12/index.html">mutex/tokio/12</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="mutex/16/index.html">16</a></th>
+                            <td><a href="mutex/std/16/index.html">mutex/std/16</a></td>
+                            <td><a href="mutex/parking_lot/16/index.html">mutex/parking_lot/16</a></td>
+                            <td><a href="mutex/async_std/16/index.html">mutex/async_std/16</a></td>
+                            <td><a href="mutex/tokio/16/index.html">mutex/tokio/16</a></td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+            <li><a href="many to 1 (unbouded)/index.html">many to 1 (unbouded)</a></li>
+            
+            <ul>
+                <li>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th><a href="many to 1 (unbouded)/async_std/index.html">async_std</a></th>
+                            <th><a href="many to 1 (unbouded)/tokio/index.html">tokio</a></th>
+                            <th><a href="many to 1 (unbouded)/std/index.html">std</a></th>
+                            <th><a href="many to 1 (unbouded)/crossbeam/index.html">crossbeam</a></th>
+                            <th><a href="many to 1 (unbouded)/flume/index.html">flume</a></th>
+                        </tr>
+                        <tr>
+                            <th><a href="many to 1 (unbouded)/4/index.html">4</a></th>
+                            <td><a href="many to 1 (unbouded)/async_std/4/index.html">many to 1 (unbouded)/async_std/4</a></td>
+                            <td><a href="many to 1 (unbouded)/tokio/4/index.html">many to 1 (unbouded)/tokio/4</a></td>
+                            <td><a href="many to 1 (unbouded)/std/4/index.html">many to 1 (unbouded)/std/4</a></td>
+                            <td><a href="many to 1 (unbouded)/crossbeam/4/index.html">many to 1 (unbouded)/crossbeam/4</a></td>
+                            <td><a href="many to 1 (unbouded)/flume/4/index.html">many to 1 (unbouded)/flume/4</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="many to 1 (unbouded)/8/index.html">8</a></th>
+                            <td><a href="many to 1 (unbouded)/async_std/8/index.html">many to 1 (unbouded)/async_std/8</a></td>
+                            <td><a href="many to 1 (unbouded)/tokio/8/index.html">many to 1 (unbouded)/tokio/8</a></td>
+                            <td><a href="many to 1 (unbouded)/std/8/index.html">many to 1 (unbouded)/std/8</a></td>
+                            <td><a href="many to 1 (unbouded)/crossbeam/8/index.html">many to 1 (unbouded)/crossbeam/8</a></td>
+                            <td><a href="many to 1 (unbouded)/flume/8/index.html">many to 1 (unbouded)/flume/8</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="many to 1 (unbouded)/12/index.html">12</a></th>
+                            <td><a href="many to 1 (unbouded)/async_std/12/index.html">many to 1 (unbouded)/async_std/12</a></td>
+                            <td><a href="many to 1 (unbouded)/tokio/12/index.html">many to 1 (unbouded)/tokio/12</a></td>
+                            <td><a href="many to 1 (unbouded)/std/12/index.html">many to 1 (unbouded)/std/12</a></td>
+                            <td><a href="many to 1 (unbouded)/crossbeam/12/index.html">many to 1 (unbouded)/crossbeam/12</a></td>
+                            <td><a href="many to 1 (unbouded)/flume/12/index.html">many to 1 (unbouded)/flume/12</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="many to 1 (unbouded)/16/index.html">16</a></th>
+                            <td><a href="many to 1 (unbouded)/async_std/16/index.html">many to 1 (unbouded)/async_std/16</a></td>
+                            <td><a href="many to 1 (unbouded)/tokio/16/index.html">many to 1 (unbouded)/tokio/16</a></td>
+                            <td><a href="many to 1 (unbouded)/std/16/index.html">many to 1 (unbouded)/std/16</a></td>
+                            <td><a href="many to 1 (unbouded)/crossbeam/16/index.html">many to 1 (unbouded)/crossbeam/16</a></td>
+                            <td><a href="many to 1 (unbouded)/flume/16/index.html">many to 1 (unbouded)/flume/16</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="many to 1 (unbouded)/20/index.html">20</a></th>
+                            <td><a href="many to 1 (unbouded)/async_std/20/index.html">many to 1 (unbouded)/async_std/20</a></td>
+                            <td><a href="many to 1 (unbouded)/tokio/20/index.html">many to 1 (unbouded)/tokio/20</a></td>
+                            <td><a href="many to 1 (unbouded)/std/20/index.html">many to 1 (unbouded)/std/20</a></td>
+                            <td><a href="many to 1 (unbouded)/crossbeam/20/index.html">many to 1 (unbouded)/crossbeam/20</a></td>
+                            <td><a href="many to 1 (unbouded)/flume/20/index.html">many to 1 (unbouded)/flume/20</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="many to 1 (unbouded)/24/index.html">24</a></th>
+                            <td><a href="many to 1 (unbouded)/async_std/24/index.html">many to 1 (unbouded)/async_std/24</a></td>
+                            <td><a href="many to 1 (unbouded)/tokio/24/index.html">many to 1 (unbouded)/tokio/24</a></td>
+                            <td><a href="many to 1 (unbouded)/std/24/index.html">many to 1 (unbouded)/std/24</a></td>
+                            <td><a href="many to 1 (unbouded)/crossbeam/24/index.html">many to 1 (unbouded)/crossbeam/24</a></td>
+                            <td><a href="many to 1 (unbouded)/flume/24/index.html">many to 1 (unbouded)/flume/24</a></td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+            <li><a href="1 to 1 (unbounded)/index.html">1 to 1 (unbounded)</a></li>
+            
+            <ul>
+                <li>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th><a href="1 to 1 (unbounded)/async_std/index.html">async_std</a></th>
+                            <th><a href="1 to 1 (unbounded)/tokio/index.html">tokio</a></th>
+                            <th><a href="1 to 1 (unbounded)/std/index.html">std</a></th>
+                            <th><a href="1 to 1 (unbounded)/crossbeam/index.html">crossbeam</a></th>
+                            <th><a href="1 to 1 (unbounded)/flume/index.html">flume</a></th>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (unbounded)/1/index.html">1</a></th>
+                            <td><a href="1 to 1 (unbounded)/async_std/1/index.html">1 to 1 (unbounded)/async_std/1</a></td>
+                            <td><a href="1 to 1 (unbounded)/tokio/1/index.html">1 to 1 (unbounded)/tokio/1</a></td>
+                            <td><a href="1 to 1 (unbounded)/std/1/index.html">1 to 1 (unbounded)/std/1</a></td>
+                            <td><a href="1 to 1 (unbounded)/crossbeam/1/index.html">1 to 1 (unbounded)/crossbeam/1</a></td>
+                            <td><a href="1 to 1 (unbounded)/flume/1/index.html">1 to 1 (unbounded)/flume/1</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (unbounded)/4/index.html">4</a></th>
+                            <td><a href="1 to 1 (unbounded)/async_std/4/index.html">1 to 1 (unbounded)/async_std/4</a></td>
+                            <td><a href="1 to 1 (unbounded)/tokio/4/index.html">1 to 1 (unbounded)/tokio/4</a></td>
+                            <td><a href="1 to 1 (unbounded)/std/4/index.html">1 to 1 (unbounded)/std/4</a></td>
+                            <td><a href="1 to 1 (unbounded)/crossbeam/4/index.html">1 to 1 (unbounded)/crossbeam/4</a></td>
+                            <td><a href="1 to 1 (unbounded)/flume/4/index.html">1 to 1 (unbounded)/flume/4</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (unbounded)/8/index.html">8</a></th>
+                            <td><a href="1 to 1 (unbounded)/async_std/8/index.html">1 to 1 (unbounded)/async_std/8</a></td>
+                            <td><a href="1 to 1 (unbounded)/tokio/8/index.html">1 to 1 (unbounded)/tokio/8</a></td>
+                            <td><a href="1 to 1 (unbounded)/std/8/index.html">1 to 1 (unbounded)/std/8</a></td>
+                            <td><a href="1 to 1 (unbounded)/crossbeam/8/index.html">1 to 1 (unbounded)/crossbeam/8</a></td>
+                            <td><a href="1 to 1 (unbounded)/flume/8/index.html">1 to 1 (unbounded)/flume/8</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (unbounded)/12/index.html">12</a></th>
+                            <td><a href="1 to 1 (unbounded)/async_std/12/index.html">1 to 1 (unbounded)/async_std/12</a></td>
+                            <td><a href="1 to 1 (unbounded)/tokio/12/index.html">1 to 1 (unbounded)/tokio/12</a></td>
+                            <td><a href="1 to 1 (unbounded)/std/12/index.html">1 to 1 (unbounded)/std/12</a></td>
+                            <td><a href="1 to 1 (unbounded)/crossbeam/12/index.html">1 to 1 (unbounded)/crossbeam/12</a></td>
+                            <td><a href="1 to 1 (unbounded)/flume/12/index.html">1 to 1 (unbounded)/flume/12</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (unbounded)/16/index.html">16</a></th>
+                            <td><a href="1 to 1 (unbounded)/async_std/16/index.html">1 to 1 (unbounded)/async_std/16</a></td>
+                            <td><a href="1 to 1 (unbounded)/tokio/16/index.html">1 to 1 (unbounded)/tokio/16</a></td>
+                            <td><a href="1 to 1 (unbounded)/std/16/index.html">1 to 1 (unbounded)/std/16</a></td>
+                            <td><a href="1 to 1 (unbounded)/crossbeam/16/index.html">1 to 1 (unbounded)/crossbeam/16</a></td>
+                            <td><a href="1 to 1 (unbounded)/flume/16/index.html">1 to 1 (unbounded)/flume/16</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (unbounded)/20/index.html">20</a></th>
+                            <td><a href="1 to 1 (unbounded)/async_std/20/index.html">1 to 1 (unbounded)/async_std/20</a></td>
+                            <td><a href="1 to 1 (unbounded)/tokio/20/index.html">1 to 1 (unbounded)/tokio/20</a></td>
+                            <td><a href="1 to 1 (unbounded)/std/20/index.html">1 to 1 (unbounded)/std/20</a></td>
+                            <td><a href="1 to 1 (unbounded)/crossbeam/20/index.html">1 to 1 (unbounded)/crossbeam/20</a></td>
+                            <td><a href="1 to 1 (unbounded)/flume/20/index.html">1 to 1 (unbounded)/flume/20</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (unbounded)/24/index.html">24</a></th>
+                            <td><a href="1 to 1 (unbounded)/async_std/24/index.html">1 to 1 (unbounded)/async_std/24</a></td>
+                            <td><a href="1 to 1 (unbounded)/tokio/24/index.html">1 to 1 (unbounded)/tokio/24</a></td>
+                            <td><a href="1 to 1 (unbounded)/std/24/index.html">1 to 1 (unbounded)/std/24</a></td>
+                            <td><a href="1 to 1 (unbounded)/crossbeam/24/index.html">1 to 1 (unbounded)/crossbeam/24</a></td>
+                            <td><a href="1 to 1 (unbounded)/flume/24/index.html">1 to 1 (unbounded)/flume/24</a></td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+            <li><a href="1 to 1 (bounded)/index.html">1 to 1 (bounded)</a></li>
+            
+            <ul>
+                <li>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th><a href="1 to 1 (bounded)/async_std/index.html">async_std</a></th>
+                            <th><a href="1 to 1 (bounded)/tokio/index.html">tokio</a></th>
+                            <th><a href="1 to 1 (bounded)/std/index.html">std</a></th>
+                            <th><a href="1 to 1 (bounded)/crossbeam/index.html">crossbeam</a></th>
+                            <th><a href="1 to 1 (bounded)/flume/index.html">flume</a></th>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (bounded)/1/index.html">1</a></th>
+                            <td><a href="1 to 1 (bounded)/async_std/1/index.html">1 to 1 (bounded)/async_std/1</a></td>
+                            <td><a href="1 to 1 (bounded)/tokio/1/index.html">1 to 1 (bounded)/tokio/1</a></td>
+                            <td><a href="1 to 1 (bounded)/std/1/index.html">1 to 1 (bounded)/std/1</a></td>
+                            <td><a href="1 to 1 (bounded)/crossbeam/1/index.html">1 to 1 (bounded)/crossbeam/1</a></td>
+                            <td><a href="1 to 1 (bounded)/flume/1/index.html">1 to 1 (bounded)/flume/1</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (bounded)/4/index.html">4</a></th>
+                            <td><a href="1 to 1 (bounded)/async_std/4/index.html">1 to 1 (bounded)/async_std/4</a></td>
+                            <td><a href="1 to 1 (bounded)/tokio/4/index.html">1 to 1 (bounded)/tokio/4</a></td>
+                            <td><a href="1 to 1 (bounded)/std/4/index.html">1 to 1 (bounded)/std/4</a></td>
+                            <td><a href="1 to 1 (bounded)/crossbeam/4/index.html">1 to 1 (bounded)/crossbeam/4</a></td>
+                            <td><a href="1 to 1 (bounded)/flume/4/index.html">1 to 1 (bounded)/flume/4</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (bounded)/8/index.html">8</a></th>
+                            <td><a href="1 to 1 (bounded)/async_std/8/index.html">1 to 1 (bounded)/async_std/8</a></td>
+                            <td><a href="1 to 1 (bounded)/tokio/8/index.html">1 to 1 (bounded)/tokio/8</a></td>
+                            <td><a href="1 to 1 (bounded)/std/8/index.html">1 to 1 (bounded)/std/8</a></td>
+                            <td><a href="1 to 1 (bounded)/crossbeam/8/index.html">1 to 1 (bounded)/crossbeam/8</a></td>
+                            <td><a href="1 to 1 (bounded)/flume/8/index.html">1 to 1 (bounded)/flume/8</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (bounded)/12/index.html">12</a></th>
+                            <td><a href="1 to 1 (bounded)/async_std/12/index.html">1 to 1 (bounded)/async_std/12</a></td>
+                            <td><a href="1 to 1 (bounded)/tokio/12/index.html">1 to 1 (bounded)/tokio/12</a></td>
+                            <td><a href="1 to 1 (bounded)/std/12/index.html">1 to 1 (bounded)/std/12</a></td>
+                            <td><a href="1 to 1 (bounded)/crossbeam/12/index.html">1 to 1 (bounded)/crossbeam/12</a></td>
+                            <td><a href="1 to 1 (bounded)/flume/12/index.html">1 to 1 (bounded)/flume/12</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (bounded)/16/index.html">16</a></th>
+                            <td><a href="1 to 1 (bounded)/async_std/16/index.html">1 to 1 (bounded)/async_std/16</a></td>
+                            <td><a href="1 to 1 (bounded)/tokio/16/index.html">1 to 1 (bounded)/tokio/16</a></td>
+                            <td><a href="1 to 1 (bounded)/std/16/index.html">1 to 1 (bounded)/std/16</a></td>
+                            <td><a href="1 to 1 (bounded)/crossbeam/16/index.html">1 to 1 (bounded)/crossbeam/16</a></td>
+                            <td><a href="1 to 1 (bounded)/flume/16/index.html">1 to 1 (bounded)/flume/16</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (bounded)/20/index.html">20</a></th>
+                            <td><a href="1 to 1 (bounded)/async_std/20/index.html">1 to 1 (bounded)/async_std/20</a></td>
+                            <td><a href="1 to 1 (bounded)/tokio/20/index.html">1 to 1 (bounded)/tokio/20</a></td>
+                            <td><a href="1 to 1 (bounded)/std/20/index.html">1 to 1 (bounded)/std/20</a></td>
+                            <td><a href="1 to 1 (bounded)/crossbeam/20/index.html">1 to 1 (bounded)/crossbeam/20</a></td>
+                            <td><a href="1 to 1 (bounded)/flume/20/index.html">1 to 1 (bounded)/flume/20</a></td>
+                        </tr>
+                        <tr>
+                            <th><a href="1 to 1 (bounded)/24/index.html">24</a></th>
+                            <td><a href="1 to 1 (bounded)/async_std/24/index.html">1 to 1 (bounded)/async_std/24</a></td>
+                            <td><a href="1 to 1 (bounded)/tokio/24/index.html">1 to 1 (bounded)/tokio/24</a></td>
+                            <td><a href="1 to 1 (bounded)/std/24/index.html">1 to 1 (bounded)/std/24</a></td>
+                            <td><a href="1 to 1 (bounded)/crossbeam/24/index.html">1 to 1 (bounded)/crossbeam/24</a></td>
+                            <td><a href="1 to 1 (bounded)/flume/24/index.html">1 to 1 (bounded)/flume/24</a></td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </ul>
+    </div>
+    <div id="footer">
+        <p>This report was generated by <a href="https://github.com/bheisler/cargo-criterion">cargo-criterion</a></p>
+    </div>
+</body>
+</html>
